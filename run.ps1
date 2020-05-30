@@ -1,6 +1,6 @@
 Write-Output "PowerShell Timer trigger function executed at:$(get-date)";
 
-$people=@("@bob","@sue","@sally","@jane","@pete","@jen","@stevo","@stuart.eggerton@hotmail.com")
+$people=@("@bob","@sue","@sally","@jane","@pete","@jen","@stevo","@example@example.com")
 
 if ($people.Count % 2 -eq 1){
     $people.Add("no match this week")
