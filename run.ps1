@@ -1,6 +1,6 @@
 Write-Output "PowerShell Timer trigger function executed at:$(get-date)";
 
-$people=@("@bob","@sue","@sally","@jane","@pete","@jen","@stevo","@example@example.com")
+$people=@("bob","sue","sally","jane","pete","jen","stevo","stuart.eggerton@hotmail.com")
 
 if ($people.Count % 2 -eq 1){
     $people.Add("no match this week")
@@ -32,23 +32,31 @@ $bodyTemplate = @"
         "themeColor": "D778D7",
         "title": "Ice breaker match",
          "sections": [
+             <span itemscope="" itemtype="http://schema.skype.com/Mention" data-itemprops="{&quot;mri&quot;:&quot;19:527737788ec04e3ea4f15c316cb4af87@thread.skype&quot;,&quot;mentionType&quot;:&quot;channel&quot;}" person-card="" class="at-mentions-focus person-card-hover" tabindex="0" role="link" aria-haspopup="true" aria-label="@ice-breaker-cheap" acc-role-dom="clickable">ice-breaker-cheap</span>
             {{sections}}
         ]
     }
 "@
 
-$sections = "";
+$sections = ""
 
 #loop through and make cards for the matches
 For ($i=0; $i -le $shuffled.Count-1; $i = $i +2) {
     $section = $sectionTemplate.Replace("{{participant1}}", $shuffled[$i]).Replace("{{participant2}}", $shuffled[$i+1])
-    $sections += ", " + $section
+    
+    if ($i -eq 0){
+        $sections += $section}
+    else{
+        $sections += ", " + $section
+    }
 }
 
 $body = $bodyTemplate.Replace("{{sections}}", $sections)
 
-Write-Output $body 
 
 $uri = "https://outlook.office.com/webhook/abc"
+
+$body
+$uri
 
 Invoke-RestMethod -uri $uri -Method Post -body $body -ContentType 'application/json'
